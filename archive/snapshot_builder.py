@@ -6,14 +6,13 @@ import numpy as np
 import pandas as pd
 import torch
 import torch.nn as nn
+from loss_functions import FocalLoss
 from sklearn.metrics import mean_squared_error
 from torch.utils.data import DataLoader
 from torch_geometric_temporal.nn import DCRNN
 from torch_geometric_temporal.signal import DynamicGraphTemporalSignal
 from tqdm import tqdm
 from transformers import AutoModel, AutoTokenizer
-
-from hate_speech_pipeline.loss_functions import FocalLoss, HybridLoss, WeightedBCELoss
 
 DEVICE = "mps"  # torch.device("mps" if torch.mps.is_available() else "cpu")
 MODEL_NAME = "sentence-transformers/all-MiniLM-L6-v2"
