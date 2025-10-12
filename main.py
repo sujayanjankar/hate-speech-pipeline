@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    parser = argparse.ArgumentParser(description="DCRNN Hate Speech Pipeline")
+    parser = argparse.ArgumentParser(description="Hate Speech Pipeline")
     parser.add_argument(
         "--generate-embeddings",
         action="store_true",
