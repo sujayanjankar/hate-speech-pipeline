@@ -150,8 +150,7 @@ def batched_predict(texts, bs=192, max_len=256, timing=False):
 
 def read_df_cp775(path, nrows=None, bad_lines_mode="skip"):
     # Try different encodings based on the file
-
-     = ["utf-8", "cp775", "latin-1"]
+    encodings_to_try = ["utf-8", "cp775", "latin-1"]
     df = None
 
     for encoding in encodings_to_try:

@@ -6,7 +6,6 @@ from pathlib import Path
 import zstandard as zstd
 from tqdm import tqdm
 
-# -------------------- CONFIG --------------------
 COMMENTS_ZSTS = [
     "/Users/simonloh/Downloads/reddit/comments/RC_2016-11.zst",
 ]
@@ -16,7 +15,6 @@ SUBS_ZSTS = [
 DB_PATH = "reddit_2016_11.db"
 BATCH_SIZE = 50_000
 ZSTD_MAX_WINDOW = 2**31
-# ------------------------------------------------
 
 
 def apply_fast_pragmas(conn: sqlite3.Connection):
