@@ -2,11 +2,24 @@
 
 ## Data Preparation
 
-### Ingest .zst archives into SQLite - `preprocessing/build_db_from_zst.py`
+All the scripts in the following section for preprocessing can be run by just runniung `hate_speech_pipeline/preprocessing/main.py`. This is small runner that executes the preprocessing scripts in order. It will call the scripts found in the scripts directory and forward the selected DB, lexicon CSV and output directory to the relevant steps.
+
+| Argument        | Type | Default        | Description                                                                                 |
+| --------------- | ---- | -------------- | ------------------------------------------------------------------------------------------- |
+| `--scripts-dir` | path | this folder    | Directory containing the preprocessing scripts (defaults to the same folder as the runner). |
+| `--db`          | path | required       | Path to the sqlite DB to operate on (required).                                             |
+| `--lexicon-csv` | path | -              | Path to `refined_ngram_dict.csv` for `make_train_pool_from_lexicon.py` (optional).          |
+| `--outdir`      | path | `prepared/csv` | Output directory used by `dump_supervision_threads.py`.                                     |
+
+Note, this will use all default args for the scripts it runs, refer to the individual script details in the following section.
+
+#### Individual Pre-processing Scripts
+
+#### Ingest .zst archives into SQLite - `preprocessing/build_db_from_zst.py`
 
 Stream large Reddit .zst dumps (submissions and comments) into a local SQLite database and create base tables and indexes. Writes to the DB (default `reddit_2016_11.db`).
 
-### Remove orphan comments - `preprocessing/fast_prune_orphans_cte.py`
+#### Remove orphan comments - `preprocessing/fast_prune_orphans_cte.py`
 
 Remove orphan comments that are not connected to any submission (prune unreachable threads) using a recursive CTE, then VACUUM the DB.
 
@@ -17,7 +30,7 @@ Remove orphan comments that are not connected to any submission (prune unreachab
   | -------- | ---- | ------------------- | ------------------------------ |
   | db       | path | `reddit_2016_11.db` | Path to the sqlite DB to prune |
 
-### Build a lexicon-matched pool - `preprocessing/make_train_pool_from_lexicon.py`
+#### Build a lexicon-matched pool - `preprocessing/make_train_pool_from_lexicon.py`
 
 Scan train comments for occurrences of the Davidson lexicon n-grams and populate a `train_lex_pool` table of matching comment ids.
 
@@ -29,7 +42,7 @@ Scan train comments for occurrences of the Davidson lexicon n-grams and populate
   | `--csv`   | path | required | Lexicon CSV (e.g. `refined_ngram_dict.csv`). |
   | `--batch` | int  | 100000   | Number of rows to fetch per DB chunk.        |
 
-### Build supervision training tables with matched negatives - `preprocessing/build_supervision_train.py`
+#### Build supervision training tables with matched negatives - `preprocessing/build_supervision_train.py`
 
 Create `positives_train` and a balanced `supervision_train` table with matched negatives (thread & time matched).
 
@@ -44,7 +57,7 @@ Create `positives_train` and a balanced `supervision_train` table with matched n
   | `--k`              | int            | 1              | Negatives per positive.                                                         |
   | `--make-val-test`  | flag           | False          | Create `supervision_val` and `supervision_test` tables with natural prevalence. |
 
-### Split supervision into train/val/test by thread chronologically - `preprocessing/chrono_thread_split_80_10_10.py`
+#### Split supervision into train/val/test by thread chronologically - `preprocessing/chrono_thread_split_80_10_10.py`
 
 Produce a thread-aware chronological split of a supervision table into train/val/test by thread start time, keeping entire threads together.
 
