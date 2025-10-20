@@ -4,6 +4,7 @@ import sqlite3
 import torch
 from tqdm import tqdm
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from typing_extensions import deprecated
 
 T_TRAIN_END = 1479600000
 MODEL_NAME = "cardiffnlp/twitter-roberta-base-hate-latest"
@@ -11,6 +12,9 @@ MAX_TOKENS = 512
 THRESHOLD = 0.5
 
 
+@deprecated(
+    "Use tum-nlp/betr-hateXplain labeling instead.", category=DeprecationWarning
+)
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", required=True)

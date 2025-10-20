@@ -1,9 +1,10 @@
 import os
-from typing import Dict, List
+from typing import Dict
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
 
 from .core_moderation import ModerationSystem
 
@@ -18,12 +19,8 @@ class ModerationVisualizer:
 
         # Set plotting style
         plt.style.use("default")
-        try:
-            import seaborn as sns
 
-            sns.set_palette("husl")
-        except ImportError:
-            pass  # Continue without seaborn if not available
+        sns.set_palette("husl")
 
     def save_plot(self, filename: str, dpi: int = 300):
         filepath = os.path.join(self.vis_directory, filename)

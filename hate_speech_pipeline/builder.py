@@ -114,7 +114,7 @@ def build_temporal_graph_local_diffusion(
         # Quick access to current rows
         group_rows = {str(row.id): row for row in group.itertuples(index=False)}
 
-        # --Fill features and diffusion labels --
+        # Fill features and diffusion labels
         for cid in node_list:
             row = group_rows[cid]
             idx_local = local_node2idx[f"comment_{cid}"]
@@ -179,12 +179,11 @@ def build_temporal_graph_local_diffusion(
                 logger.debug("Comment %s has no next bin; no label assigned.", cid)
                 mask[idx_local] = False  # last bin has no label
 
-        # --Edges within t (child -> parent if both in node_list) --
+        # Edges child -> parent if both in node_list
         edges: List[List[int]] = []
         edge_weights: List[float] = []
 
         # Build edges from replies where both child and parent are present in this t-bin
-        # (No future leakage; optional to include additional historical context nodes)
         for cid in node_list:
             row = group_rows[cid]
             p = getattr(row, "parent_id")

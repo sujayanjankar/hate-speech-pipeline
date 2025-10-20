@@ -3,11 +3,6 @@ import sqlite3
 import sys
 
 
-def execmany(cur, stmts):
-    for s in stmts:
-        cur.execute(s)
-
-
 def main():
     ap = argparse.ArgumentParser(
         description="Create positives_train and balanced supervision_train (thread & time matched)."
